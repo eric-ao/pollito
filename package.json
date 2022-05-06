@@ -1,0 +1,23 @@
+{
+  "name": "Pollito",
+  "version": "0.0.1",
+  "main": "index.js",
+  "author": "eric-ao",
+  "dependencies": {
+    "@discordjs/builders": "^0.9.0",
+    "@discordjs/rest": "^0.2.0-canary.0",
+    "discord-api-types": "^0.25.2",
+    "discord.js": "13.0.0",
+    "dotenv": "^16.0.0"
+  },
+  "engines": {
+    "node": "12.x",
+    "npm": "*"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "license": "ISC",
+  "description": ""
+}

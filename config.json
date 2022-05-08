@@ -1,4 +1,6 @@
 {
-    "rol_amigo_pollito": "Amigo de pollito 🐣",
-    "rol_amigo_pollito_color": [245, 219, 91]
+    "role_amigo_pollito": "Amigo de pollito 🐣",
+    "role_amigo_pollito_color": [245, 219, 91],
+    "role_amigo_pollito_reaction_emoji": "🐣",
+    "roles_msg_title": "Obtener roles"
 }

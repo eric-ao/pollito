@@ -45,9 +45,8 @@ function createRole(guild, role, color) {
     logger.print(`Created the "${role}" role in a guild.`)
 }
 
-/**
- * Everytime Pollito joins a new guild, it will automatically create the needed roles.
- */
+
+//Everytime Pollito joins a new guild, it will create the needed roles.
 client.on('guildCreate', guild => {
     logger.print(`Pollito just joined a new guild!`);
     createRole(guild, config.rol_amigo_pollito, config.rol_amigo_pollito_color);

@@ -1,4 +1,5 @@
 const {client} = require('./client');       //Bot client.
+const pollito = require('./scripts/pollito')
 const logger = require('./util/logger');    //Custom logger useful to print timestamps.
 const roles = require('./scripts/roles');   //Roles module.
 const fs = require('fs');                   //File systema module.
@@ -20,6 +21,8 @@ client.login(process.env.TOKEN).then(() => logger.print("Bot logged in"));
 client.once("ready", () => {
     logger.print("Bot ready")
     roles.checkForRoles();
+    pollito.scheduleGM();
+    pollito.scheduleGN();
 })
 
 //Runs everytime a command is executed.

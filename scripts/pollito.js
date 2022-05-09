@@ -8,7 +8,10 @@ const {client} = require('../client')
 //It will only message those users with the "Amigo de pollito" role.
 async function scheduleGM() {
     logger.print(`Scheduling wishing a good day at ${config.good_morning_hour}:00...`)
-    schedule.scheduleJob({hour:config.good_morning_hour, minute: 0}, async () => {
+    let scheduleRule = new schedule.RecurrenceRule();
+    scheduleRule.hour = config.good_morning_hour;
+    scheduleRule.tz = 'Etc/GMT+2'
+    schedule.scheduleJob(scheduleRule, async () => {
         let counter = 0;
         let msg = `Pío pío, buenos dias! ${GMmsgs[Math.floor(Math.random()*GMmsgs.length)]} 🐥`;
         let idsDone = [];
@@ -30,7 +33,10 @@ async function scheduleGM() {
 //It will only message those users with the "Amigo de pollito" role.
 async function scheduleGN() {
     logger.print(`Scheduling wishing a good night at ${config.good_night_hour}:00...`)
-    schedule.scheduleJob({hour:config.good_night_hour, minute: 00}, async () => {
+    let scheduleRule = new schedule.RecurrenceRule();
+    scheduleRule.hour = config.good_night_hour;
+    scheduleRule.tz = 'Etc/GMT+2'
+    schedule.scheduleJob(scheduleRule, async () => {
         let counter = 0;
         let msg = `Pío pío, buenas noches! ${GNmsgs[Math.floor(Math.random()*GNmsgs.length)]} Te quiero mucho, descansa 💤`
         let idsDone = [];

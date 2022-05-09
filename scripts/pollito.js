@@ -15,7 +15,6 @@ let GNmsgs = lang.good_night_msgs;
  */
 async function scheduleGM() {
     logger.print(`Scheduling wishing a good day at ${config.good_morning_hour}:00...`)
-    scheduleRule.hour = config.good_morning_hour;
     schedule.scheduleJob({hour: config.good_morning_hour, minute: 0}, () => {return scheduledJob(`Pío pío, buenos dias! ${GMmsgs[Math.floor(Math.random()*GMmsgs.length)]} 🐥`, "day")});
 }
 

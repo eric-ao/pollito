@@ -17,7 +17,6 @@ async function findORcreate(guild, roleName, roleColor) {
         await createRole(guild, roleName, roleColor);
         return false;
     } else {
-        logger.print(`${roleName} role found in the new guild!`)
         return true;
     }
 }

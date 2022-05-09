@@ -49,7 +49,14 @@ async function createRole(guild, role, color) {
 //Everytime Pollito joins a new guild, it will create the needed roles.
 client.on('guildCreate', guild => {
     logger.print(`Pollito just joined a new guild!`);
-    createRole(guild, config.role_amigo_pollito, config.role_amigo_pollito_color);
+    logger.print(`Checking for the ${config.role_amigo_pollito} role...`)
+    let role = guild.roles.cache.find(role => role.name === config.role_amigo_pollito)
+    if(role === undefined) {
+        logger.print(`${config.role_amigo_pollito} role not found, creating one...`)
+        createRole(guild, config.role_amigo_pollito, config.role_amigo_pollito_color);
+    } else {
+        logger.print(`${config.role_amigo_pollito} role found in the new guild!`)
+    }
 })
 
 //Everytime someone reacts to a message, if the message is the role assignation one, gives the role.

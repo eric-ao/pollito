@@ -1,8 +1,20 @@
 {
-    "role_amigo_pollito": "Amigo de pollito 🐣",
-    "role_amigo_pollito_color": [245, 219, 91],
-    "role_amigo_pollito_reaction_emoji": "🐣",
-    "roles_msg_title": "Obtener roles",
+    "roles": 
+    {
+        "msg_title": "Obtener roles",
+        "amigo_pollito":
+        {
+            "name": "Amigo de pollito 🐣",
+            "color": [245, 219, 91],
+            "emoji": "🐣"
+        },
+        "admin_pollito":
+        {
+            "name": "🐓",
+            "color": [250, 181, 77],
+            "emoji": "🐓"
+        }
+    },
     "good_morning_hour": 8,
     "good_night_hour": 22
 }

@@ -16,7 +16,7 @@ async function scheduleGM() {
         let msg = `Pío pío, buenos dias! ${GMmsgs[Math.floor(Math.random()*GMmsgs.length)]} 🐥`;
         let idsDone = [];
         client.guilds.cache.forEach(guild => {
-            guild.members.cache.filter(member => member.roles.cache.find(role => role.name === config.role_amigo_pollito))
+            guild.members.cache.filter(member => member.roles.cache.find(role => role.name === config.roles.amigo_pollito.name))
                 .forEach(member => {
                     if(!idsDone.includes(member.id)) {
                         counter++;
@@ -41,7 +41,7 @@ async function scheduleGN() {
         let msg = `Pío pío, buenas noches! ${GNmsgs[Math.floor(Math.random()*GNmsgs.length)]} Te quiero mucho, descansa 💤`
         let idsDone = [];
         client.guilds.cache.forEach(guild => {
-            guild.members.cache.filter(member => member.roles.cache.find(role => role.name === config.role_amigo_pollito))
+            guild.members.cache.filter(member => member.roles.cache.find(role => role.name === config.roles.amigo_pollito.name))
                 .forEach(member => {
                     if(!idsDone.includes(member.id)) {
                         counter++;

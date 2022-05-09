@@ -7,8 +7,6 @@ const {client} = require('../client')
 let GMmsgs = lang.good_morning_msgs;
 let GNmsgs = lang.good_night_msgs;
 
-let scheduleRule = new schedule.RecurrenceRule();
-scheduleRule.tz = 'Etc/GMT+2'
 
 
 /**
@@ -18,7 +16,7 @@ scheduleRule.tz = 'Etc/GMT+2'
 async function scheduleGM() {
     logger.print(`Scheduling wishing a good day at ${config.good_morning_hour}:00...`)
     scheduleRule.hour = config.good_morning_hour;
-    schedule.scheduleJob(scheduleRule, () => {return scheduledJob(`Pío pío, buenos dias! ${GMmsgs[Math.floor(Math.random()*GMmsgs.length)]} 🐥`, "day")});
+    schedule.scheduleJob({hour: config.good_morning_hour, minute: 0}, () => {return scheduledJob(`Pío pío, buenos dias! ${GMmsgs[Math.floor(Math.random()*GMmsgs.length)]} 🐥`, "day")});
 }
 
 /**
@@ -27,8 +25,8 @@ async function scheduleGM() {
  */
 async function scheduleGN() {
     logger.print(`Scheduling wishing a good night at ${config.good_night_hour}:00...`)
-    scheduleRule.hour = config.good_night_hour;
-    schedule.scheduleJob(scheduleRule, () => {return scheduledJob(`Pío pío, buenas noches! ${GNmsgs[Math.floor(Math.random()*GNmsgs.length)]} Te quiero mucho, descansa 💤`, "night")});
+    schedule.scheduleJob({hour: config.good_night_hour, minute: 0}, () => { logger.print("aqui")
+        return scheduledJob(`Pío pío, buenas noches! ${GNmsgs[Math.floor(Math.random()*GNmsgs.length)]} Te quiero mucho, descansa 💤`, "night")});
 }
 
 /**

@@ -7,27 +7,40 @@ const config = require('../config.json')
  * In case the guild does not have the roles, Pollito will create them.
  */
 function checkForRoles() {
-    let foundRolesCounter = 0;
-    let createdRolesCounter = 0;
+    let foundAmigoRolesCounter = 0;
+    let createdAmigoRolesCounter = 0;
+    let foundAdminRolesCounter = 0;
+    let createdAdminRolesCounter = 0;
     let guildsCounter = 0;
 
     logger.print(`Checking on guilds for needed roles...`)
 
     client.guilds.cache.forEach(guild => {
         guildsCounter++;
+        
         let role = guild.roles.cache.find(role => role.name === config.roles.amigo_pollito.name)
         if(role === undefined) {
             createRole(guild, config.roles.amigo_pollito.name, config.roles.amigo_pollito.color);
-            createdRolesCounter++;
+            createdAmigoRolesCounter++;
         } else {
-            foundRolesCounter++;
+            foundAmigoRolesCounter++;
+        }
+
+        role = guild.roles.cache.find(role => role.name === config.roles.admin_pollito.name)
+        if(role === undefined) {
+            createRole(guild, config.roles.admin_pollito.name, config.roles.admin_pollito.color);
+            createdAdminRolesCounter++;
+        } else {
+            foundAdminRolesCounter++;
         }
     })
 
     logger.print(`Checking done!`)
     logger.print(`Checked ${guildsCounter} guilds.`)
-    logger.print(`Found ${foundRolesCounter} "${config.roles.amigo_pollito.name}" roles.`)
-    logger.print(`Created ${createdRolesCounter} "${config.roles.amigo_pollito.name}" roles.`)
+    logger.print(`Found ${foundAmigoRolesCounter} "${config.roles.amigo_pollito.name}" roles.`)
+    logger.print(`Created ${createdAmigoRolesCounter} "${config.roles.amigo_pollito.name}" roles.`)
+    logger.print(`Found ${foundAdminRolesCounter} "${config.roles.admin_pollito.name}" roles.`)
+    logger.print(`Created ${createdAdminRolesCounter} "${config.roles.admin_pollito.name}" roles.`)
 }
 
 /**
@@ -49,6 +62,7 @@ async function createRole(guild, role, color) {
 //Everytime Pollito joins a new guild, it will create the needed roles.
 client.on('guildCreate', guild => {
     logger.print(`Pollito just joined a new guild!`);
+    
     logger.print(`Checking for the ${config.roles.amigo_pollito.name} role...`)
     let role = guild.roles.cache.find(role => role.name === config.roles.amigo_pollito.name)
     if(role === undefined) {
@@ -56,6 +70,15 @@ client.on('guildCreate', guild => {
         createRole(guild, config.roles.amigo_pollito.name, config.roles.amigo_pollito.color);
     } else {
         logger.print(`${config.roles.amigo_pollito.name} role found in the new guild!`)
+    }
+
+    logger.print(`Checking for the ${config.roles.admin_pollito.name} role...`)
+    role = guild.roles.cache.find(role => role.name === config.roles.admin_pollito.name)
+    if(role === undefined) {
+        logger.print(`${config.roles.admin_pollito.name} role not found, creating one...`)
+        createRole(guild, config.roles.admin_pollito.name, config.roles.admin_pollito.color);
+    } else {
+        logger.print(`${config.roles.admin_pollito.name} role found in the new guild!`)
     }
 })
 

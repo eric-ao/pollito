@@ -11,12 +11,16 @@ async function scheduleGM() {
     schedule.scheduleJob({hour:config.good_morning_hour, minute: 0}, async () => {
         let counter = 0;
         let msg = `Pío pío, buenos dias! ${GMmsgs[Math.floor(Math.random()*GMmsgs.length)]} 🐥`;
+        let idsDone = [];
         client.guilds.cache.forEach(guild => {
             guild.members.cache.filter(member => member.roles.cache.find(role => role.name === config.role_amigo_pollito))
                 .forEach(member => {
-                    counter++;
-                    member.send(msg)
-                        .catch(err => logger.error(err));
+                    if(!idsDone.includes(member.id)) {
+                        counter++;
+                        idsDone.push(member.id);
+                        member.send(msg)
+                            .catch(err => logger.error(err));
+                    }            
                 })
         });
         logger.print(`Wished a good day to ${counter} users.`)
@@ -29,12 +33,16 @@ async function scheduleGN() {
     schedule.scheduleJob({hour:config.good_night_hour, minute: 00}, async () => {
         let counter = 0;
         let msg = `Pío pío, buenas noches! ${GNmsgs[Math.floor(Math.random()*GNmsgs.length)]} Te quiero mucho, descansa 💤`
+        let idsDone = [];
         client.guilds.cache.forEach(guild => {
             guild.members.cache.filter(member => member.roles.cache.find(role => role.name === config.role_amigo_pollito))
                 .forEach(member => {
-                    counter++;
-                    member.send(msg)
-                        .catch(err => logger.error(err));
+                    if(!idsDone.includes(member.id)) {
+                        counter++;
+                        idsDone.push(member.id);
+                        member.send(msg)
+                            .catch(err => logger.error(err));
+                    }
                 })
         });
         logger.print(`Wished a good night to ${counter} users.`)

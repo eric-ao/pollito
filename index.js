@@ -1,9 +1,10 @@
-const {client} = require('./client');       //Bot client.
-const pollito = require('./scripts/pollito')
-const logger = require('./util/logger');    //Custom logger useful to print timestamps.
-const roles = require('./scripts/roles');   //Roles module.
-const fs = require('fs');                   //File systema module.
-require('dotenv').config();                 //Environment variables.
+const {client} = require('./client');           //Bot client.
+const pollito = require('./scripts/pollito')    //Pollito module.
+const logger = require('./util/logger');        //Custom logger useful to print timestamps.
+const roles = require('./scripts/roles');       //Roles module.
+const fs = require('fs');                       //File systema module.
+const db = require('./util/database');          //Database
+require('dotenv').config();                     //Environment variables.
 
 //Loads every command.
 const { Collection } = require('discord.js')
@@ -23,6 +24,7 @@ client.once("ready", () => {
     roles.checkForRoles();
     pollito.scheduleGM();
     pollito.scheduleGN();
+    db.connectDB();
 })
 
 //Runs everytime a command is executed.

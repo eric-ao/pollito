@@ -1,8 +1,10 @@
 const schedule = require('node-schedule');
 const logger = require('../util/logger');
-const config = require('../config.json')
-const lang = require('../lang/es.json')
-const {client} = require('../client')
+const config = require('../config.json');
+const lang = require('../lang/es.json');
+const database = require('../util/database');
+const {client} = require('../client');
+require('dotenv').config();
 
 let GMmsgs = lang.good_morning_msgs;
 let GNmsgs = lang.good_night_msgs;
@@ -50,5 +52,14 @@ async function scheduledJob(message, time) {
     logger.print(`Wished a good ${time} to ${counter} users.`)
 }
 
+
+//Pollito sums 1 everytime Catalina changes her profile picture.
+client.on('guildMemberUpdate', (oldMember, newMember) => {
+    if(oldMember.id === newMember.id === process.env.CATA_ID) {
+        if(oldMember.avatar !== newMember.avatar)
+            logger.print("Catalina just changed her profile picture!");
+            database.registerCatalinaPFPChange();
+    }
+})
 
 module.exports = { scheduleGM, scheduleGN }

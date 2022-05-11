@@ -55,10 +55,11 @@ async function scheduledJob(message, time) {
 
 //Pollito sums 1 everytime Catalina changes her profile picture.
 client.on('guildMemberUpdate', (oldMember, newMember) => {
-    if(oldMember.id === newMember.id === process.env.CATA_ID) {
-        if(oldMember.avatar !== newMember.avatar)
+    if(newMember.id === process.env.CATA_ID) {
+        if(oldMember.avatar !== newMember.avatar) {
             logger.print("Catalina just changed her profile picture!");
             database.registerCatalinaPFPChange();
+        } 
     }
 })
 

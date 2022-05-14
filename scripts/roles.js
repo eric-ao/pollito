@@ -101,7 +101,8 @@ client.on('messageReactionAdd', async (reaction, user) => {
     if(reacMsg.author.id === client.user.id) {
         if(reacMsg.embeds[0] !== undefined && reacMsg.embeds[0].title === config.roles.msg_title) {
             if(reacEmoji === apEmoji) {
-                findORcreate(guild, apName, apColor)
+                await findORcreate(reacMsg.guild, apName, apColor);
+                let role = reacMsg.guild.roles.cache.find(role => role.name === apName)
                 await reacMsg.guild.members.cache.get(user.id).roles.add(role.id);
                 logger.print(`Role "${role.name}" added to a user.`)
             }

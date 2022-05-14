@@ -26,7 +26,7 @@ async function scheduleGM() {
  */
 async function scheduleGN() {
     logger.print(`Scheduling wishing a good night at ${config.good_night_hour}:00...`)
-    schedule.scheduleJob({hour: config.good_night_hour, minute: 15}, () => { logger.print("aqui")
+    schedule.scheduleJob({hour: config.good_night_hour, minute: 0}, () => { logger.print("aqui")
         return scheduledJob(`Pío pío, buenas noches! ${GNmsgs[Math.floor(Math.random()*GNmsgs.length)]} Te quiero mucho, descansa 💤`, "night")});
 }
 

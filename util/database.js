@@ -59,7 +59,7 @@ async function getCatalinaPFPChanges() {
             
             let date = new Date(timestamp); 
             let now = new Date();
-            let msBetweenDates = Math.abs((date.getTime()+7200000) - now.getTime()); //I need to add 2 hours to the time because of the host timezone. I will change this later...
+            let msBetweenDates = Math.abs((date.getTime()) - now.getTime());
 
             let hoursBetweenDate = msBetweenDates / (60 * 60 * 1000);
             if(hoursBetweenDate <= 24) c24++;

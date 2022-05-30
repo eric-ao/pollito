@@ -30,7 +30,8 @@ module.exports = {
             day < 10 ? (day = '0' + day) : '';
             let month = interaction.options.getInteger('month');
             month < 10 ? (month = '0' + month) : '';
-            let id = interaction.member.id;
+
+            let id = interaction.user.id;
 
             //Checks if the date is correct.
             var date = Date.parse(`2000-${month}-${day}T00:00:00`);
@@ -53,8 +54,8 @@ module.exports = {
         } 
         //Delete birthday date command.
         else if(interaction.options.getSubcommand() === 'delete') {
-            if(await database.alreadyRegistered(interaction.member.id)) {
-                database.deleteBirthday(interaction, interaction.member.id);
+            if(await database.alreadyRegistered(interaction.user.id)) {
+                database.deleteBirthday(interaction, interaction.user.id);
             } else {
                 interaction.reply(`No tienes ninguna fecha registrada!`).then(() => {
                     setTimeout(() => interaction.deleteReply(), 5000);
@@ -64,7 +65,7 @@ module.exports = {
         //Check birthday date command.
         else if(interaction.options.getSubcommand() === 'check') {
             logger.print("Someone checked its birthday date.");
-            let id = interaction.member.id;
+            let id = interaction.user.id;
             //The user has a registered birthday date.
             if(await database.alreadyRegistered(id)) {
                 let responseObj = await database.getBirthdayDate(id);

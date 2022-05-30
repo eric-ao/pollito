@@ -24,6 +24,7 @@ client.once("ready", () => {
     roles.checkForRoles();
     pollito.scheduleGM();
     pollito.scheduleGN();
+    pollito.scheduleBirthdayWish();
     db.connectDB();
 })
 

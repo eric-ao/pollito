@@ -16,5 +16,10 @@
         }
     },
     "good_morning_hour": 6,
-    "good_night_hour": 20
+    "good_night_hour": 20,
+    "birthday":
+    {
+        "hour": 22,
+        "msg": "Feliz cumpleaños! 🥳🎂 Espero que cumplas muchos más y que seas muy feliz!🪅🎉 Recuerda siempre que te quiero mucho 💝"
+    }
 }

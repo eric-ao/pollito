@@ -24,6 +24,12 @@ function connectDB() {
     })
 }
 
+
+
+
+
+////// CATALINA //////
+
 /**
  * Saves in the database a new timestamp.
  */
@@ -80,4 +86,134 @@ async function getCatalinaPFPChanges() {
     return null;
 }
 
-module.exports = { connectDB, registerCatalinaPFPChange, getCatalinaPFPChanges }
+////// CATALINA //////
+
+
+
+
+
+////// BIRTHDAYS //////
+
+/**
+ * Registers the birthday date for a user.
+ * @param interaction - interaction object from the command.
+ * @param id - snowflake id of the user that executed the command.
+ * @param day - day of the birthday, selected from the command.
+ * @param month - month of the birthday, selected from the command.
+ */
+function registerBirthday(interaction, id, day, month) {
+    connection.query("INSERT INTO `Birthdays` (user_id, day, month) VALUES ("+id+","+day+","+month+")", (err, result) => {
+        if (err) logger.error(err);
+
+        if (result.affectedRows != 1) {
+            logger.error("Something went wrong registering a new birthday date.");
+            interaction.reply("Algo salió mal :(").then(() => {
+                setTimeout(() => interaction.deleteReply(), 5000);
+                }).catch(err => logger.error(err))
+        }
+        else {
+            let months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
+            logger.print(`Someone added its birthday date (${interaction.options.getInteger('day')}/${interaction.options.getInteger('month')}).`);
+            interaction.reply(`Tu cumpleaños se ha guardado! (${interaction.options.getInteger('day')} de ${months[month-1]})`).then(() => {
+                setTimeout(() => interaction.deleteReply(), 5000);
+                }).catch(err => logger.error(err))
+        }
+    })
+}
+
+/**
+ * Checks if a user already has registered a birthday date.
+ * @param id - snowflake id of the user that executed the command.
+ * @returns true if birthday date registered, false otherwise.
+ */
+async function alreadyRegistered(id) {
+    let query = util.promisify(connection.query).bind(connection);
+
+    //Define the async function that executes the query.
+    let getQuery = async () => {
+        let result = await query("SELECT * FROM `Birthdays` WHERE user_id="+id);
+        return result;
+    }
+
+    //Get the result.
+    let results = await getQuery();
+    return Object.keys(results).length != 0;
+}
+
+/**
+ * Gets the birthday date of the user.
+ * @param id - snowflake id of the user that executed the command.
+ * @returns an object with the day, and the month as text.
+ */
+async function getBirthdayDate(id) {
+    let query = util.promisify(connection.query).bind(connection);
+
+    //Define the async function that executes the query.
+    let getQuery = async () => {
+        let result = await query("SELECT * FROM `Birthdays` WHERE user_id="+id);
+        return result;
+    }
+
+    //Get the result.
+    let results = await getQuery();
+    let retObj;
+    try {
+        let months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
+        Object.keys(results).forEach(key => {
+            retObj = new Object({day: results[key].day, month: months[results[key].month-1]});
+        })
+    } catch (err) { logger.error(err) }
+
+    return retObj;
+}
+
+function deleteBirthday(interaction, id) {
+    connection.query("DELETE FROM `Birthdays` WHERE user_id="+id, (err, result) => {
+        if (err) logger.error(err);
+
+        if (result.affectedRows != 1) {
+            logger.error("Something went wrong registering a new birthday date.");
+            interaction.reply("Algo salió mal :(").then(() => {
+                setTimeout(() => interaction.deleteReply(), 5000);
+                }).catch(err => logger.error(err))
+        }
+        else {
+            logger.print("Someone deleted its birthday date.");
+            interaction.reply("Día de tu cumpleaños borrado :(").then(() => {
+                setTimeout(() => interaction.deleteReply(), 5000);
+                }).catch(err => logger.error(err))
+        }
+    });
+}
+
+async function getBirthdays() {
+    let query = util.promisify(connection.query).bind(connection);
+
+    let day = new Date().getDate();
+    let month = new Date().getMonth() + 1;
+
+    //Define the async function that executes the query.
+    let getQuery = async () => {
+        let result = await query("SELECT * FROM `Birthdays` WHERE day="+day+" AND month="+month);
+        return result;
+    }
+
+    //Get the result.
+    let results = await getQuery();
+    let birthdaysIDs = []
+    try {
+        Object.keys(results).forEach(key => {
+            birthdaysIDs.push(results[key].user_id);
+        })
+    } catch (err) { logger.error(err) }
+
+    return birthdaysIDs;
+}
+
+
+
+////// BIRTHDAYS //////
+
+
+
+module.exports = { connectDB, registerCatalinaPFPChange, getCatalinaPFPChanges, registerBirthday, alreadyRegistered, getBirthdayDate, deleteBirthday, getBirthdays }

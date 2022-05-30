@@ -26,8 +26,7 @@ async function scheduleGM() {
  */
 async function scheduleGN() {
     logger.print(`Scheduling wishing a good night at ${config.good_night_hour}:00...`)
-    schedule.scheduleJob({hour: config.good_night_hour, minute: 0}, () => { logger.print("aqui")
-        return scheduledJob(`Pío pío, buenas noches! ${GNmsgs[Math.floor(Math.random()*GNmsgs.length)]} Te quiero mucho, descansa 💤`, "night")});
+    schedule.scheduleJob({hour: config.good_night_hour, minute: 0}, () => {return scheduledJob(`Pío pío, buenas noches! ${GNmsgs[Math.floor(Math.random()*GNmsgs.length)]} Te quiero mucho, descansa 💤`, "night")});
 }
 
 /**
@@ -52,6 +51,28 @@ async function scheduledJob(message, time) {
     logger.print(`Wished a good ${time} to ${counter} users.`)
 }
 
+async function scheduleBirthdayWish() {
+    logger.print("Scheduling birthdays check...")
+    schedule.scheduleJob(`02 ${config.birthday.hour} * * *`, async () => {
+        let counter = 0;
+        let idsDone = [];
+        let birthdays = await database.getBirthdays();
+        logger.print(`Today is the birthday of ${birthdays.length} users.`)
+        birthdays.forEach(id => {
+            client.guilds.cache.forEach(guild => {
+                //It will only try to find the member once if its in many guilds with Pollito.
+                if(!idsDone.includes(id)) {
+                    counter++;
+                    idsDone.push(id);
+                    let member = guild.members.cache.find(member => member.id == id);
+                    member.send(config.birthday.msg).catch(err => logger.error(err));
+                }
+            })
+        })
+        logger.print(`Wished happy birthday to ${counter} users.`)
+    })
+}
+
 
 //Pollito sums 1 everytime Catalina changes her profile picture.
 client.on('guildMemberUpdate', (oldMember, newMember) => {
@@ -63,4 +84,4 @@ client.on('guildMemberUpdate', (oldMember, newMember) => {
     }
 })
 
-module.exports = { scheduleGM, scheduleGN }
+module.exports = { scheduleGM, scheduleGN, scheduleBirthdayWish }

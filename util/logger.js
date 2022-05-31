@@ -1,9 +1,13 @@
+const fs = require('fs');
+
 /**
  * Sends through console a new info message.
  * @param message - content of the message.
  */
 function print(message) {
-    console.log(`${getTimeStamp()} - ${message}`);
+    let msg = `${getTimeStamp()} - ${message}`;
+    console.log(msg);
+    fs.writeFile(getPath(), msg+"\n", {flag: 'a'}, err => {if (err) error(err)})
 }
 
 /**
@@ -11,7 +15,9 @@ function print(message) {
  * @param message - content of the message.
  */
 function error(message) {
-    console.log(`${getTimeStamp()} - ERROR: ${message}`);
+    let msg = `${getTimeStamp()} - ERROR: ${message}`;
+    console.log(msg);
+    fs.writeFile(getPath(), msg+"\n", {flag: 'a'}, err => {if (err) console.error(err)})
 }
 
 /**
@@ -22,6 +28,11 @@ function error(message) {
 function getTimeStamp() {
     let date = new Date();
     return `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}`;
+}
+
+function getPath() {
+    let date = new Date();
+    return `./logs/${date.getDate()}-${date.getMonth()}-${date.getFullYear()}.log`
 }
 
 module.exports = { print, error }

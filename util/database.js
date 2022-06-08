@@ -189,7 +189,7 @@ function deleteBirthday(interaction, id) {
 async function getBirthdays() {
     let query = util.promisify(connection.query).bind(connection);
 
-    let day = new Date().getDate();
+    let day = new Date().getDate()+1;       //Gotta add this temporal solution to the host timezone diff.
     let month = new Date().getMonth() + 1;
 
     //Define the async function that executes the query.

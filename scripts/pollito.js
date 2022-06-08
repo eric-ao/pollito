@@ -53,7 +53,7 @@ async function scheduledJob(message, time) {
 
 async function scheduleBirthdayWish() {
     logger.print("Scheduling birthdays check...")
-    schedule.scheduleJob(`02 ${config.birthday.hour} * * *`, async () => {
+    schedule.scheduleJob(`00 ${config.birthday.hour} * * *`, async () => {
         let counter = 0;
         let idsDone = [];
         let birthdays = await database.getBirthdays();

@@ -75,7 +75,7 @@ async function scheduleBirthdayWish() {
 
 
 //Pollito sums 1 everytime Catalina changes her profile picture.
-client.on('guildMemberUpdate', (oldMember, newMember) => {
+client.on('userUpdate', (oldMember, newMember) => {
     if(newMember.id === process.env.CATA_ID) {
         if(oldMember.avatar !== newMember.avatar) {
             logger.print("Catalina just changed her profile picture!");

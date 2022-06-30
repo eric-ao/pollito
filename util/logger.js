@@ -50,7 +50,7 @@ function getTimeStamp() {
 
 function getPath() {
     let date = new Date();
-    return `${dirPath}/${date.getDate()}-${date.getMonth()}-${date.getFullYear()}.log`
+    return `${dirPath}/${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}.log`
 }
 
 module.exports = { print, error }

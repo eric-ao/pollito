@@ -26,6 +26,19 @@ function connectDB() {
 
 
 
+/////// EGGS ///////
+
+function addEggs(id, amount) {
+    connection.query("INSERT INTO `Huevos` (user_id, huevos) VALUES ("+id+","+amount+")", (err, result) => {
+        if (err) logger.error(err);
+        
+        if (result.affectedRows != 1) logger.error("Something went wrong adding eggs.")
+        else logger.print(`${amount} eggs added to ${id} successfully.`);
+    })
+}
+
+/////// EGGS ///////
+
 
 
 ////// CATALINA //////
@@ -216,4 +229,4 @@ async function getBirthdays() {
 
 
 
-module.exports = { connectDB, registerCatalinaPFPChange, getCatalinaPFPChanges, registerBirthday, alreadyRegistered, getBirthdayDate, deleteBirthday, getBirthdays }
+module.exports = { connectDB, registerCatalinaPFPChange, getCatalinaPFPChanges, registerBirthday, alreadyRegistered, getBirthdayDate, deleteBirthday, getBirthdays, addEggs }

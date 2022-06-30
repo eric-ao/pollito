@@ -1,5 +1,6 @@
 const {client} = require('./client');           //Bot client.
 const pollito = require('./scripts/pollito')    //Pollito module.
+const eggs = require('./scripts/huevos')        //Eggs module.
 const logger = require('./util/logger');        //Custom logger useful to print timestamps.
 const roles = require('./scripts/roles');       //Roles module.
 const fs = require('fs');                       //File systema module.
@@ -26,6 +27,7 @@ client.once("ready", () => {
     pollito.scheduleGN();
     pollito.scheduleBirthdayWish();
     db.connectDB();
+    eggs.startEggSchedule();
 })
 
 //Runs everytime a command is executed.

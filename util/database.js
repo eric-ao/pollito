@@ -54,21 +54,25 @@ function addEggs(id, amount) {
 }
 
 async function getHuevos(id) {
-    connection.query("SELECT * FROM `Huevos` WHERE user_id = " + id, (err, result) => {
-        if (err) logger.error(err);
-    
-        let eggs = 0;
-        if(result) {          
-            Object.keys(result).forEach(key => {
-                eggs = result[key].huevos;
-            })
-        }
-        return eggs;
-    })
+    let query = util.promisify(connection.query).bind(connection);
+
+    //Define the async function that executes the query.
+    let getQuery = async () => {
+        let result = await query("SELECT * FROM `Huevos` WHERE user_id = " + id);
+        return result;
+    }
+
+    //Get the result.
+    let results = await getQuery();
+    let eggs = 0;
+    try {
+        Object.keys(results).forEach(key => {
+            eggs = results[key].huevos;
+        })
+    } catch (err) { logger.error(err) }
+
+    return eggs;
 }
-
-
-
 
 /////// EGGS ///////
 

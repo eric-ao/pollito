@@ -9,11 +9,9 @@ module.exports = {
 
     async execute(interaction) {
         let eggs = await database.getHuevos(interaction.user.id);
-
         let embed = new MessageEmbed()
-                .setColor('#ffde4a')
-                .setTitle("Huevos")
-                .setDescription(`TIenes ${eggs} 🥚!`)
+                .setColor('#f7dece')
+                .setDescription(`Tienes ${eggs} 🥚`)
         interaction.reply({embeds: [embed]})
     }
 }

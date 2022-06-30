@@ -53,6 +53,20 @@ function addEggs(id, amount) {
     }) 
 }
 
+async function getHuevos(id) {
+    connection.query("SELECT * FROM `Huevos` WHERE user_id = " + id, (err, result) => {
+        if (err) logger.error(err);
+    
+        let eggs = 0;
+        if(result) {          
+            Object.keys(result).forEach(key => {
+                eggs = result[key].huevos;
+            })
+        }
+        return eggs;
+    })
+}
+
 
 
 
@@ -248,4 +262,4 @@ async function getBirthdays() {
 
 
 
-module.exports = { connectDB, registerCatalinaPFPChange, getCatalinaPFPChanges, registerBirthday, alreadyRegistered, getBirthdayDate, deleteBirthday, getBirthdays, addEggs }
+module.exports = { connectDB, registerCatalinaPFPChange, getCatalinaPFPChanges, registerBirthday, alreadyRegistered, getBirthdayDate, deleteBirthday, getBirthdays, addEggs, getHuevos }

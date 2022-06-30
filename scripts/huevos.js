@@ -34,7 +34,6 @@ async function inVoiceChannel() {
 }
 
 function giveEggs(id, amount) {
-    logger.print(`Giving ${amount} eggs to ${id}...`)
     database.addEggs(id, amount);
 }
 

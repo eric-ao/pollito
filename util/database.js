@@ -39,7 +39,6 @@ function addEggs(id, amount) {
                     if (err) logger.error(err);
                 
                     if (result.affectedRows != 1) logger.error("Something went wrong adding eggs.")
-                    else logger.print(`${amount} eggs added to ${id} successfully.`);
                 })
             })  
         } else {
@@ -47,7 +46,6 @@ function addEggs(id, amount) {
                 if (err) logger.error(err);
                 
                 if (result.affectedRows != 1) logger.error("Something went wrong adding eggs.")
-                else logger.print(`${amount} eggs added to ${id} successfully.`);
             })
         }
     }) 

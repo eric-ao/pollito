@@ -29,13 +29,32 @@ function connectDB() {
 /////// EGGS ///////
 
 function addEggs(id, amount) {
-    connection.query("INSERT INTO `Huevos` (user_id, huevos) VALUES ("+id+","+amount+")", (err, result) => {
+    connection.query("SELECT * FROM `Huevos` WHERE user_id = " + id, (err, result) => {
         if (err) logger.error(err);
-        
-        if (result.affectedRows != 1) logger.error("Something went wrong adding eggs.")
-        else logger.print(`${amount} eggs added to ${id} successfully.`);
-    })
+
+        if(result) {
+            Object.keys(result).forEach(key => {
+                let newEggs = result[key].huevos + amount;
+                connection.query("UPDATE `Huevos` SET huevos = " + newEggs + " WHERE user_id = " + id, (err, result) => {
+                    if (err) logger.error(err);
+                
+                    if (result.affectedRows != 1) logger.error("Something went wrong adding eggs.")
+                    else logger.print(`${amount} eggs added to ${id} successfully.`);
+                })
+            })  
+        } else {
+            connection.query("INSERT INTO `Huevos` (user_id, huevos) VALUES ("+id+","+amount+")", (err, result) => {
+                if (err) logger.error(err);
+                
+                if (result.affectedRows != 1) logger.error("Something went wrong adding eggs.")
+                else logger.print(`${amount} eggs added to ${id} successfully.`);
+            })
+        }
+    }) 
 }
+
+
+
 
 /////// EGGS ///////
 

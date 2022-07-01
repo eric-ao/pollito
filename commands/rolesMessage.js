@@ -11,9 +11,9 @@ module.exports = {
     async execute(interaction) {
         if(guildId == null) {
             interaction.reply(`No puedo hacer eso aquí!`).then(() => {
-                setTimeout(() => {
+                setTimeout(async () => {
                     try {
-                        interaction.deleteReply()
+                        await interaction.deleteReply()
                     } catch (err) {
                         logger.error(err);
                     }
@@ -24,9 +24,9 @@ module.exports = {
         //If the user doesn't have the Admin Pollito role, they can't use the command.
         if(interaction.member.roles.cache.find(role => role.name === config.roles.admin_pollito.name) === undefined)
             interaction.reply("No tienes permisos.").then(() => {
-                setTimeout(() => {
+                setTimeout(async () => {
                     try {
-                        interaction.deleteReply()
+                        await interaction.deleteReply()
                     } catch (err) {
                         logger.error(err);
                     }
@@ -49,9 +49,9 @@ module.exports = {
 
             //Replies to the command and deletes the reply after 3 seconds.
             interaction.reply("Mensaje enviado!").then(() => {
-                setTimeout(() => {
+                setTimeout(async () => {
                     try {
-                        interaction.deleteReply()
+                        await interaction.deleteReply()
                     } catch (err) {
                         logger.error(err);
                     }

@@ -37,9 +37,9 @@ module.exports = {
             var date = Date.parse(`2000-${month}-${day}T00:00:00`);
             if (isNaN(date)) {
                 interaction.reply(`Esa fecha no es válida`).then(() => {
-                    setTimeout(() => {
+                    setTimeout(async () => {
                         try {
-                            interaction.deleteReply()
+                            await interaction.deleteReply()
                         } catch (err) {
                             logger.error(err);
                         }
@@ -49,9 +49,9 @@ module.exports = {
             //Checks if the user has already a registered birthday date. 
             else if (await database.alreadyRegistered(id)) {
                 interaction.reply(`Ya tienes una fecha registrada!`).then(() => {
-                    setTimeout(() => {
+                    setTimeout(async () => {
                         try {
-                            interaction.deleteReply()
+                            await interaction.deleteReply()
                         } catch (err) {
                             logger.error(err);
                         }
@@ -70,9 +70,9 @@ module.exports = {
                 database.deleteBirthday(interaction, interaction.user.id);
             } else {
                 interaction.reply(`No tienes ninguna fecha registrada!`).then(() => {
-                    setTimeout(() => {
+                    setTimeout(async () => {
                         try {
-                            interaction.deleteReply()
+                            await interaction.deleteReply()
                         } catch (err) {
                             logger.error(err);
                         }
@@ -88,9 +88,9 @@ module.exports = {
             if(await database.alreadyRegistered(id)) {
                 let responseObj = await database.getBirthdayDate(id);
                 interaction.reply(`Tu cumpleaños es el ${responseObj.day} de ${responseObj.month}!`).then(() => {
-                    setTimeout(() => {
+                    setTimeout(async () => {
                         try {
-                            interaction.deleteReply()
+                            await interaction.deleteReply()
                         } catch (err) {
                             logger.error(err);
                         }
@@ -100,9 +100,9 @@ module.exports = {
             //The user does not have a registered birthday date.
             else {
                 interaction.reply(`No tienes ninguna fecha registrada!`).then(() => {
-                    setTimeout(() => {
+                    setTimeout(async () => {
                         try {
-                            interaction.deleteReply()
+                            await interaction.deleteReply()
                         } catch (err) {
                             logger.error(err);
                         }

@@ -21,9 +21,9 @@ module.exports = {
                     'Para ser *administrador* de Pollito, necesitas el rol autogenerado: 🐓\n\u200B\n' +
                     '· **/rolesmsg** - Mensaje para el rol de *Amigo de Pollito*\n')
         interaction.reply({embeds: [embed]}).then(() => {
-            setTimeout(() => {
+            setTimeout(async () => {
                 try {
-                    interaction.deleteReply()
+                    await interaction.deleteReply()
                 } catch (err) {
                     logger.error(err);
                 }

@@ -16,9 +16,9 @@ module.exports = {
         //The command can't be played in DMs.
         if(guildId == null) {
             interaction.reply(`No puedo cantar aquí!`).then(() => {
-                setTimeout(() => {
+                setTimeout(async () => {
                     try {
-                        interaction.deleteReply()
+                        await interaction.deleteReply()
                     } catch (err) {
                         logger.error(err);
                     }
@@ -27,9 +27,9 @@ module.exports = {
         }
         else {
             interaction.reply(`Coming soon! :)`).then(() => {
-                setTimeout(() => {
+                setTimeout(async () => {
                     try {
-                        interaction.deleteReply()
+                        await interaction.deleteReply()
                     } catch (err) {
                         logger.error(err);
                     }

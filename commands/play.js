@@ -16,12 +16,24 @@ module.exports = {
         //The command can't be played in DMs.
         if(guildId == null) {
             interaction.reply(`No puedo cantar aquí!`).then(() => {
-                setTimeout(() => interaction.deleteReply(), 5000);
+                setTimeout(() => {
+                    try {
+                        interaction.deleteReply()
+                    } catch (err) {
+                        logger.error(err);
+                    }
+                }, 5000);
             }).catch(err => logger.error(err))
         }
         else {
             interaction.reply(`Coming soon! :)`).then(() => {
-                setTimeout(() => interaction.deleteReply(), 5000);
+                setTimeout(() => {
+                    try {
+                        interaction.deleteReply()
+                    } catch (err) {
+                        logger.error(err);
+                    }
+                }, 5000);
             }).catch(err => logger.error(err))
             return;
 

@@ -9,10 +9,28 @@ module.exports = {
         .setDescription('Envía un mensaje en el que los usuarios pueden reaccionar para ponerse y quitarse roles'),
 
     async execute(interaction) {
+        if(guildId == null) {
+            interaction.reply(`No puedo hacer eso aquí!`).then(() => {
+                setTimeout(() => {
+                    try {
+                        interaction.deleteReply()
+                    } catch (err) {
+                        logger.error(err);
+                    }
+                }, 5000);
+            }).catch(err => logger.error(err))
+        }
+
         //If the user doesn't have the Admin Pollito role, they can't use the command.
         if(interaction.member.roles.cache.find(role => role.name === config.roles.admin_pollito.name) === undefined)
             interaction.reply("No tienes permisos.").then(() => {
-                setTimeout(() => interaction.deleteReply(), 3000);
+                setTimeout(() => {
+                    try {
+                        interaction.deleteReply()
+                    } catch (err) {
+                        logger.error(err);
+                    }
+                }, 3000);
             }).catch(err => logger.error(err))
         else {
             //Creates the embed.
@@ -31,7 +49,13 @@ module.exports = {
 
             //Replies to the command and deletes the reply after 3 seconds.
             interaction.reply("Mensaje enviado!").then(() => {
-                setTimeout(() => interaction.deleteReply(), 3000);
+                setTimeout(() => {
+                    try {
+                        interaction.deleteReply()
+                    } catch (err) {
+                        logger.error(err);
+                    }
+                }, 3000);
                 }).catch(err => logger.error(err))
         }
     }

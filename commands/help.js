@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js');
 const database = require('../util/database');
+const logger = require('../util/logger');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -20,7 +21,13 @@ module.exports = {
                     'Para ser *administrador* de Pollito, necesitas el rol autogenerado: 🐓\n\u200B\n' +
                     '· **/rolesmsg** - Mensaje para el rol de *Amigo de Pollito*\n')
         interaction.reply({embeds: [embed]}).then(() => {
-            setTimeout(() => interaction.deleteReply(), 15000);
+            setTimeout(() => {
+                try {
+                    interaction.deleteReply()
+                } catch (err) {
+                    logger.error(err);
+                }
+            }, 15000);
         }).catch(err => logger.error(err));
     }
 }

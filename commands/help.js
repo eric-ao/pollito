@@ -13,10 +13,12 @@ module.exports = {
                 .setTitle("Comandos")
                 .setDescription(
                     '· **/birthday** - Pollito te felicitará tu cumpleaños\n' + 
-                    '· **/rolesmsg** - Mensaje para el rol de *Amigo de Pollito*\n' +
                     '· **/catalina** - Cuantas veces se ha cambiado la foto Catalina\n' +
                     '· **/huevos** - Comprueba cuantos tienes\n\u200B\n'+
-                    'Si eres *Amigo de Pollito*, te dirá buenos días y buenas noches todos los días!')
+                    'Si eres *Amigo de Pollito*, te dirá buenos días y buenas noches todos los días!\n\u200B\n\u200B\n' +
+                    'Administrador:' + 
+                    'Para ser *administrador* de Pollito, necesitas el rol autogenerado: 🐓\n\u200B\n' +
+                    '· **/rolesmsg** - Mensaje para el rol de *Amigo de Pollito*\n')
         interaction.reply({embeds: [embed]}).then(() => {
             setTimeout(() => interaction.deleteReply(), 15000);
         }).catch(err => logger.error(err));

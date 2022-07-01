@@ -32,7 +32,7 @@ function addEggs(id, amount) {
     connection.query("SELECT * FROM `Huevos` WHERE user_id = " + id, (err, result) => {
         if (err) logger.error(err);
 
-        if(result) {
+        if(result.length > 0) {
             Object.keys(result).forEach(key => {
                 let newEggs = result[key].huevos + amount;
                 connection.query("UPDATE `Huevos` SET huevos = " + newEggs + " WHERE user_id = " + id, (err, result) => {

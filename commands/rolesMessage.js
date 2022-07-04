@@ -9,7 +9,10 @@ module.exports = {
         .setDescription('Envía un mensaje en el que los usuarios pueden reaccionar para ponerse y quitarse roles'),
 
     async execute(interaction) {
+        logger.print(`Rolesmsg command executed`)
+
         if(guildId == null) {
+            logger.print(`Command sent in the DMs`)
             interaction.reply(`No puedo hacer eso aquí!`).then(() => {
                 setTimeout(async () => {
                     try {
@@ -22,7 +25,8 @@ module.exports = {
         }
 
         //If the user doesn't have the Admin Pollito role, they can't use the command.
-        if(interaction.member.roles.cache.find(role => role.name === config.roles.admin_pollito.name) === undefined)
+        if(interaction.member.roles.cache.find(role => role.name === config.roles.admin_pollito.name) === undefined){
+            logger.print(`Command sent by a user without the proper permissions.`)
             interaction.reply("No tienes permisos.").then(() => {
                 setTimeout(async () => {
                     try {
@@ -32,7 +36,7 @@ module.exports = {
                     }
                 }, 3000);
             }).catch(err => logger.error(err))
-        else {
+        } else {
             //Creates the embed.
             let embed = new MessageEmbed()
                 .setColor('#ffde4a')
@@ -43,9 +47,15 @@ module.exports = {
                 ).setFooter('Elimina la reacción para quitarte el rol');
 
             //Sends the embed and adds the reaction emojis.
-            await interaction.channel.send({embeds: [embed]}).then(msg => {
-                msg.react(config.roles.amigo_pollito.emoji)
-                }).catch(err => logger.error(err));
+            logger.print("Sending the roles embed message...")
+            await interaction.channel.send({embeds: [embed]})
+                .then(msg => {
+                    logger.print("Embed message sent successfully!")
+                    logger.print("Reacting to the message...")
+                    msg.react(config.roles.amigo_pollito.emoji)
+                        .then(() => {logger.print("Reaction added successfully!")})
+                        .catch(err => {logger.error(err)})})
+                .catch(err => logger.error(err));
 
             //Replies to the command and deletes the reply after 3 seconds.
             interaction.reply("Mensaje enviado!").then(() => {

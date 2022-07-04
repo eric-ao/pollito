@@ -48,6 +48,10 @@ function getTimeStamp() {
     return `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}`;
 }
 
+/**
+ * Gets the path for the logs.
+ * @returns {string} - the path
+ */
 function getPath() {
     let date = new Date();
     return `${dirPath}/${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}.log`

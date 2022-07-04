@@ -10,11 +10,14 @@ module.exports = {
         .addStringOption(option => option.setName('url').setDescription('Link de la canción').setRequired(true)),
 
     async execute(interaction) {
+        logger.print(`Play command executed`)
+
         //Credits: Grabriel Tanner (https://gabrieltanner.org/)
 
         guildId = interaction.guildId;
         //The command can't be played in DMs.
         if(guildId == null) {
+            logger.print("Command sent in the DMs")
             interaction.reply(`No puedo cantar aquí!`).then(() => {
                 setTimeout(async () => {
                     try {

@@ -9,6 +9,8 @@ module.exports = {
         .setDescription('Comandos útiles de Pollito'),
 
     async execute(interaction) {
+        logger.print(`Help command executed`)
+
         let embed = new MessageEmbed()
                 .setColor('#ffde4a')
                 .setTitle("Comandos")
@@ -20,6 +22,7 @@ module.exports = {
                     'Administrador:' + 
                     'Para ser *administrador* de Pollito, necesitas el rol autogenerado: 🐓\n\u200B\n' +
                     '· **/rolesmsg** - Mensaje para el rol de *Amigo de Pollito*\n')
+
         interaction.reply({embeds: [embed]}).then(() => {
             setTimeout(async () => {
                 try {

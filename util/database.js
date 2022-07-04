@@ -56,7 +56,13 @@ async function getHuevos(id) {
 
     //Define the async function that executes the query.
     let getQuery = async () => {
-        let result = await query("SELECT * FROM `Huevos` WHERE user_id = " + id);
+        let result;
+        try{
+            result = await query("SELECT * FROM `Huevos` WHERE user_id = " + id);
+            logger.print("Amount of eggs of the user recovered successfully!")
+        } catch (err)  {
+            logger.error(err);
+        }
         return result;
     }
 
@@ -64,9 +70,11 @@ async function getHuevos(id) {
     let results = await getQuery();
     let eggs = 0;
     try {
+        logger.print("Converting the information recovered from the database...")
         Object.keys(results).forEach(key => {
             eggs = results[key].huevos;
         })
+        logger.print("Information converted successfully!")
     } catch (err) { logger.error(err) }
 
     return eggs;
@@ -99,13 +107,19 @@ async function getCatalinaPFPChanges() {
 
     //Define the async function that executes the query.
     let getQuery = async () => {
-        let result = await query("SELECT * FROM `Catalina`");
+        let result;
+        try {
+            result = await query("SELECT * FROM `Catalina`");
+            logger.print("Amount of times Catalina changed her profile picture recovered successfully!")
+        } catch (err) { logger.error(err) }
+
         return result;
     }
 
     //Get the result, and try to parse it.
     let results = await getQuery();
     try {
+        logger.print("Trying to convert the information recovered from the database...")
         let c24 = 0; let c7 = 0; let c30 = 0; let ctotal = 0;
         Object.keys(results).forEach(key => {
             let row = JSON.stringify(results[key]);
@@ -128,6 +142,8 @@ async function getCatalinaPFPChanges() {
         counters.c7 = c7;
         counters.c30 = c30;
         counters.ctotal = ctotal;
+
+        logger.print("Information converted successfully!")
         return counters;
     } catch (err) { logger.error(err) }
     
@@ -161,7 +177,7 @@ function registerBirthday(interaction, id, day, month) {
         }
         else {
             let months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
-            logger.print(`Someone added its birthday date (${interaction.options.getInteger('day')}/${interaction.options.getInteger('month')}).`);
+            logger.print(`Birthday date registered (${interaction.options.getInteger('day')}/${interaction.options.getInteger('month')}).`);
             interaction.reply(`Tu cumpleaños se ha guardado! (${interaction.options.getInteger('day')} de ${months[month-1]})`).then(() => {
                 setTimeout(() => interaction.deleteReply(), 5000);
                 }).catch(err => logger.error(err))
@@ -198,7 +214,12 @@ async function getBirthdayDate(id) {
 
     //Define the async function that executes the query.
     let getQuery = async () => {
-        let result = await query("SELECT * FROM `Birthdays` WHERE user_id="+id);
+        let result;
+        try {
+            result = await query("SELECT * FROM `Birthdays` WHERE user_id="+id);
+            logger.print("Birthday date registered for a user recovered successfully!")
+        } catch(error) { logger.error(error) }
+        
         return result;
     }
 
@@ -206,10 +227,12 @@ async function getBirthdayDate(id) {
     let results = await getQuery();
     let retObj;
     try {
+        logger.print("Trying to convert the birthday date recovered from the database...")
         let months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
         Object.keys(results).forEach(key => {
             retObj = new Object({day: results[key].day, month: months[results[key].month-1]});
         })
+        logger.print("Birthday date converted successfully!")
     } catch (err) { logger.error(err) }
 
     return retObj;
@@ -226,7 +249,7 @@ function deleteBirthday(interaction, id) {
                 }).catch(err => logger.error(err))
         }
         else {
-            logger.print("Someone deleted its birthday date.");
+            logger.print("Birthday date deleted.");
             interaction.reply("Día de tu cumpleaños borrado :(").then(() => {
                 setTimeout(() => interaction.deleteReply(), 5000);
                 }).catch(err => logger.error(err))

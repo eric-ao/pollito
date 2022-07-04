@@ -64,6 +64,8 @@ async function createRole(guild, role, color) {
         color: color,
         mentionable: true
     })
+    .then(() => logger.print(`${role} role created successfully.`))
+    .catch(error => logger.error(error))
     return createdRole;
 }
 
@@ -101,10 +103,12 @@ client.on('messageReactionAdd', async (reaction, user) => {
     if(reacMsg.author.id === client.user.id) {
         if(reacMsg.embeds[0] !== undefined && reacMsg.embeds[0].title === config.roles.msg_title) {
             if(reacEmoji === apEmoji) {
-                await findORcreate(reacMsg.guild, apName, apColor);
+                logger.print(`Someone reacted to the roles msg, checking if the role exists...`)
+                if(await findORcreate(reacMsg.guild, apName, apColor)) logger.print(`${apName} role found. Giving it to the user...`)
                 let role = reacMsg.guild.roles.cache.find(role => role.name === apName)
-                await reacMsg.guild.members.cache.get(user.id).roles.add(role.id);
-                logger.print(`Role "${role.name}" added to a user.`)
+                await reacMsg.guild.members.cache.get(user.id).roles.add(role.id)
+                    .then(() => logger.print(`${apName} role given to the user successfully!`))
+                    .catch(err => logger.error(err));
             }
         }
     }
@@ -130,10 +134,16 @@ client.on('messageReactionRemove', async(reaction, user) => {
     if(reacMsg.author.id === client.user.id) {
         if(reacMsg.embeds[0] !== undefined && reacMsg.embeds[0].title === config.roles.msg_title) {
             if(reacEmoji === apEmoji) {
+                logger.print(`Someone removed reaction to the roles msg, checking if the role exists...`)
                 let role = reacMsg.guild.roles.cache.find(role => role.name === apName)
                 if(role !== undefined) {
-                    await reacMsg.guild.members.cache.get(user.id).roles.remove(role);
-                    logger.print(`Role "${role.name}" removed from a user.`)
+                    logger.print(`${apName} role found. Removing it from the user...`)
+                    await reacMsg.guild.members.cache.get(user.id).roles.remove(role)
+                        .then(() => logger.print(`${apName} role removed from the user successfully!`))
+                        .catch(err => logger.error(err));
+                }
+                else {
+                    logger.print(`Role didn't exist. Nothing left to do..`)
                 }
             }
         }

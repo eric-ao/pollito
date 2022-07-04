@@ -25,6 +25,7 @@ module.exports = {
     async execute(interaction) {
         //Add birthday date subcommand.
         if(interaction.options.getSubcommand() === 'add') {
+            logger.print(`Birthday add command executed`)
 
             let day = interaction.options.getInteger('day');
             day < 10 ? (day = '0' + day) : '';
@@ -60,13 +61,17 @@ module.exports = {
             }
             //Registers the birthday date.
             else {
+                logger.print(`Registering a new birthday date for a user...`)
                 database.registerBirthday(interaction, id, day, month);
             }
 
         } 
         //Delete birthday date command.
         else if(interaction.options.getSubcommand() === 'delete') {
+            logger.print(`Birthday delete command executed`)
+
             if(await database.alreadyRegistered(interaction.user.id)) {
+                logger.print(`Deleting the birthday date for a user...`)
                 database.deleteBirthday(interaction, interaction.user.id);
             } else {
                 interaction.reply(`No tienes ninguna fecha registrada!`).then(() => {
@@ -82,11 +87,14 @@ module.exports = {
         } 
         //Check birthday date command.
         else if(interaction.options.getSubcommand() === 'check') {
-            logger.print("Someone checked its birthday date.");
+            logger.print(`Birthday check command executed`)
+
             let id = interaction.user.id;
             //The user has a registered birthday date.
             if(await database.alreadyRegistered(id)) {
+                logger.print(`Getting the birthday date registered for a user...`)
                 let responseObj = await database.getBirthdayDate(id);
+                
                 interaction.reply(`Tu cumpleaños es el ${responseObj.day} de ${responseObj.month}!`).then(() => {
                     setTimeout(async () => {
                         try {

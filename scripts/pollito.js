@@ -37,6 +37,7 @@ async function scheduleGN() {
 async function scheduledJob(message, time) {
     let counter = 0;
     let idsDone = [];
+    logger.print(`Wishing a good ${time} to members with the ${config.role.amigo_pollito.name} role...`)
     client.guilds.cache.forEach(guild => {
         guild.members.cache.filter(member => member.roles.cache.find(role => role.name === config.roles.amigo_pollito.name))
             .forEach(member => {
@@ -48,7 +49,7 @@ async function scheduledJob(message, time) {
                 }
             })
     });
-    logger.print(`Wished a good ${time} to ${counter} users.`)
+    logger.print(`Wished a good ${time} to ${counter} users successfully!`)
 }
 
 async function scheduleBirthdayWish() {
@@ -58,6 +59,7 @@ async function scheduleBirthdayWish() {
         let idsDone = [];
         let birthdays = await database.getBirthdays();
         logger.print(`Today is the birthday of ${birthdays.length} users.`)
+        logger.print(`Wishing a happy birthday to them...`)
         birthdays.forEach(id => {
             client.guilds.cache.forEach(guild => {
                 //It will only try to find the member once if its in many guilds with Pollito.

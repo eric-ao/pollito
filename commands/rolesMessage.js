@@ -11,6 +11,7 @@ module.exports = {
     async execute(interaction) {
         logger.print(`Rolesmsg command executed`)
 
+        guildId = interaction.guildId;
         if(guildId == null) {
             logger.print(`Command sent in the DMs`)
             interaction.reply(`No puedo hacer eso aquí!`).then(() => {

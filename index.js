@@ -8,7 +8,8 @@ const db = require('./util/database');          //Database
 require('dotenv').config();                     //Environment variables.
 
 //Loads every command.
-const { Collection } = require('discord.js')
+const { Collection } = require('discord.js');
+const { type } = require('os');
 client.commands = new Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 for(let file of commandFiles) {
@@ -28,7 +29,7 @@ client.once("ready", () => {
     pollito.scheduleBirthdayWish();
     db.connectDB();
     eggs.startEggSchedule();
-    client.user.setActivity("mi Pollito fiu fiu 💕")
+    pollito.setPresence();
 })
 
 //Runs everytime a command is executed.

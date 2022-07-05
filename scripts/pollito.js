@@ -86,4 +86,17 @@ client.on('userUpdate', (oldMember, newMember) => {
     }
 })
 
-module.exports = { scheduleGM, scheduleGN, scheduleBirthdayWish }
+function setPresence() {
+    logger.print("Setting Pollito's presence...")
+    client.user.setPresence(
+        { 
+            activities: 
+                [
+                    { name: 'mi Pollito fiu fiu 🐣💕'}
+                ],
+            status: 'online' 
+        }
+    )
+}
+
+module.exports = { scheduleGM, scheduleGN, scheduleBirthdayWish, setPresence }

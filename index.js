@@ -28,6 +28,7 @@ client.once("ready", () => {
     pollito.scheduleBirthdayWish();
     db.connectDB();
     eggs.startEggSchedule();
+    client.user.setActivity("mi Pollito fiu fiu 💕")
 })
 
 //Runs everytime a command is executed.

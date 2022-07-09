@@ -37,7 +37,7 @@ async function scheduleGN() {
 async function scheduledJob(message, time) {
     let counter = 0;
     let idsDone = [];
-    logger.print(`Wishing a good ${time} to members with the ${config.role.amigo_pollito.name} role...`)
+    logger.print(`Wishing a good ${time} to members with the ${config.roles.amigo_pollito.name} role...`)
     client.guilds.cache.forEach(guild => {
         guild.members.cache.filter(member => member.roles.cache.find(role => role.name === config.roles.amigo_pollito.name))
             .forEach(member => {

@@ -18,14 +18,12 @@ async function startEggSchedule() {
 }
 
 async function inVoiceChannel() {
-    logger.print("Checking users that have been on a voice channel for a minute...")
     let connectedIdsCopy = [...connectedIds]
     connectedIds = []
     client.guilds.cache.forEach(guild => {
         guild.members.cache.each(member => {
             if(member.voice.channel && member.voice.channel.guildId === guild.id) {
                 if(connectedIdsCopy.includes(member.id)) {
-                    logger.print(`Giving ${member.voice.channel.members.size} eggs to a user...`)
                     database.addEggs(member.id, member.voice.channel.members.size);
                 }  
                 connectedIds.push(member.id);

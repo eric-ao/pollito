@@ -26,132 +26,49 @@ function connectDB() {
 
 
 
-/////// EGGS ///////
+////// FRIENDS //////
 
-function addEggs(id, amount) {
-    connection.query("SELECT * FROM `Huevos` WHERE user_id = " + id, (err, result) => {
-        if (err) logger.error(err);
-
-        if(result.length > 0) {
-            Object.keys(result).forEach(key => {
-                let newEggs = result[key].huevos + amount;
-                connection.query("UPDATE `Huevos` SET huevos = " + newEggs + " WHERE user_id = " + id, (err, result) => {
-                    if (err) logger.error(err);
-                
-                    if (result.affectedRows != 1) logger.error("Something went wrong adding eggs.")
-                })
-            })  
-        } else {
-            connection.query("INSERT INTO `Huevos` (user_id, huevos) VALUES ("+id+","+amount+")", (err, result) => {
-                if (err) logger.error(err);
-                
-                if (result.affectedRows != 1) logger.error("Something went wrong adding eggs.")
-            })
-        }
-    }) 
-}
-
-async function getHuevos(id) {
+async function getAllFriends() {
     let query = util.promisify(connection.query).bind(connection);
 
-    //Define the async function that executes the query.
     let getQuery = async () => {
-        let result;
-        try{
-            result = await query("SELECT * FROM `Huevos` WHERE user_id = " + id);
-            logger.print("Amount of eggs of the user recovered successfully!")
-        } catch (err)  {
-            logger.error(err);
-        }
+        let result = await query("SELECT * FROM `Friends` WHERE friend=true");
         return result;
     }
 
+    logger.print("Getting all Pollito's friends...")
+    let results = await getQuery();
+
+    let friends = []
+    try {
+        logger.print("Trying to get the IDs from its friends...")
+        Object.keys(results).forEach(key => {
+            friends.push(results[key].user_id);
+        })
+        logger.print("Friends IDs recovered successfully!")
+    } catch (err) { logger.error(err) }
+
+    return friends;
+}
+
+async function isFriend(id) {
+    let query = util.promisify(connection.query).bind(connection);
+
+    let getQuery = async () => {
+        let result = await query("SELECT * FROM `Friends` WHERE friend = true AND client_id="+id);
+        return result;
+    }
+
+    logger.print("Checking if the user is friend with Pollito...")
+    
     //Get the result.
     let results = await getQuery();
-    let eggs = 0;
-    try {
-        logger.print("Converting the information recovered from the database...")
-        Object.keys(results).forEach(key => {
-            eggs = results[key].huevos;
-        })
-        logger.print("Information converted successfully!")
-    } catch (err) { logger.error(err) }
-
-    return eggs;
+    return Object.keys(results).length != 0;
 }
 
-/////// EGGS ///////
 
 
-
-////// CATALINA //////
-
-/**
- * Saves in the database a new timestamp.
- */
-function registerCatalinaPFPChange() {
-    connection.query("INSERT INTO `Catalina` (pfp_change) VALUES (CURRENT_TIMESTAMP)", (err, result) => {
-        if (err) logger.error(err);
-        
-        if (result.affectedRows != 1) logger.error("Something went wrong registering Catalina's pfp change.")
-        else logger.print("Profile picture change registered successfully.");
-    })
-}
-
-/**
- * Gets how many times Catalina changed her profile picture in different time spans.
- * @returns Object containing all of the counters, or null if something went wrong.
- */
-async function getCatalinaPFPChanges() {
-    let query = util.promisify(connection.query).bind(connection);
-
-    //Define the async function that executes the query.
-    let getQuery = async () => {
-        let result;
-        try {
-            result = await query("SELECT * FROM `Catalina`");
-            logger.print("Amount of times Catalina changed her profile picture recovered successfully!")
-        } catch (err) { logger.error(err) }
-
-        return result;
-    }
-
-    //Get the result, and try to parse it.
-    let results = await getQuery();
-    try {
-        logger.print("Trying to convert the information recovered from the database...")
-        let c24 = 0; let c7 = 0; let c30 = 0; let ctotal = 0;
-        Object.keys(results).forEach(key => {
-            let row = JSON.stringify(results[key]);
-            let timestamp = row.substring(row.indexOf('2'), row.lastIndexOf('"'))
-            
-            let date = new Date(timestamp); 
-            let now = new Date();
-            let msBetweenDates = Math.abs((date.getTime()) - now.getTime());
-
-            let hoursBetweenDate = msBetweenDates / (60 * 60 * 1000);
-            if(hoursBetweenDate <= 24) c24++;
-            if(hoursBetweenDate <= 168) c7++;
-            if(hoursBetweenDate <= 730) c30++;
-            ctotal++;
-        })
-
-        //Stores the counters in a single object to be able to return all of them.
-        var counters = new Object();
-        counters.c24 = c24;
-        counters.c7 = c7;
-        counters.c30 = c30;
-        counters.ctotal = ctotal;
-
-        logger.print("Information converted successfully!")
-        return counters;
-    } catch (err) { logger.error(err) }
-    
-    return null;
-}
-
-////// CATALINA //////
-
+////// FRIENDS //////
 
 
 
@@ -287,4 +204,4 @@ async function getBirthdays() {
 
 
 
-module.exports = { connectDB, registerCatalinaPFPChange, getCatalinaPFPChanges, registerBirthday, alreadyRegistered, getBirthdayDate, deleteBirthday, getBirthdays, addEggs, getHuevos }
+module.exports = { connectDB, getAllFriends, registerBirthday, alreadyRegistered, getBirthdayDate, deleteBirthday, getBirthdays, isFriend }

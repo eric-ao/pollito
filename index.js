@@ -23,12 +23,13 @@ client.login(process.env.TOKEN).then(() => logger.print("Bot logged in"));
 //Run once Pollito is ready.
 client.once("ready", () => {
     logger.print("Bot ready")
-    roles.checkForRoles();
+    
+    db.connectDB();
+    
     pollito.scheduleGM();
     pollito.scheduleGN();
     pollito.scheduleBirthdayWish();
-    db.connectDB();
-    eggs.startEggSchedule();
+    
     pollito.setPresence();
 })
 

@@ -1,15 +1,13 @@
 const {client} = require('./client');           //Bot client.
+const schedule = require('./scripts/schedule')  //Schedule module.
 const pollito = require('./scripts/pollito')    //Pollito module.
-const eggs = require('./scripts/huevos')        //Eggs module.
 const logger = require('./util/logger');        //Custom logger useful to print timestamps.
-const roles = require('./scripts/roles');       //Roles module.
 const fs = require('fs');                       //File systema module.
 const db = require('./util/database');          //Database
 require('dotenv').config();                     //Environment variables.
 
 //Loads every command.
 const { Collection } = require('discord.js');
-const { type } = require('os');
 client.commands = new Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 for(let file of commandFiles) {
@@ -26,9 +24,9 @@ client.once("ready", () => {
     
     db.connectDB();
     
-    pollito.scheduleGM();
-    pollito.scheduleGN();
-    pollito.scheduleBirthdayWish();
+    schedule.scheduleGM();
+    schedule.scheduleGN();
+    schedule.scheduleBirthdayWish();
     
     pollito.setPresence();
 })

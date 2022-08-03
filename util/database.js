@@ -55,17 +55,47 @@ async function isFriend(id) {
     let query = util.promisify(connection.query).bind(connection);
 
     let getQuery = async () => {
-        let result = await query("SELECT * FROM `Friends` WHERE friend = true AND client_id="+id);
+        let result = await query("SELECT * FROM `Friends` WHERE friend = true AND user_id="+id);
         return result;
     }
 
-    logger.print("Checking if the user is friend with Pollito...")
+    logger.print("Checking if a user is friends with Pollito...")
     
     //Get the result.
     let results = await getQuery();
     return Object.keys(results).length != 0;
 }
 
+function addFriend(interaction, id) {
+    logger.print("Adding a new user to Pollito's friend list...")
+
+    connection.query("INSERT INTO `Friends` (user_id, friend) VALUES ("+id+", true)", (err, result) => {
+        if (err) logger.error(err);
+
+        if (result.affectedRows != 1) {
+            logger.error("Something went wrong adding a new friend.");
+
+            try {
+                interaction.message.delete()
+            } catch (err) {
+                logger.error(err);
+            }
+            interaction.user.send("Uy... Me he equivocado, intentemoslo de nuevo! 😣")
+        }
+        else {
+            logger.print("Friend added successfully!")
+
+            try {
+                interaction.message.delete()
+            } catch (err) {
+                logger.error(err);
+            }
+
+            interaction.user.send("Genial! Me alegro mucho de que seamos amigos! 🥰")
+        }
+    })
+
+}
 
 
 ////// FRIENDS //////
@@ -204,4 +234,4 @@ async function getBirthdays() {
 
 
 
-module.exports = { connectDB, getAllFriends, registerBirthday, alreadyRegistered, getBirthdayDate, deleteBirthday, getBirthdays, isFriend }
+module.exports = { connectDB, getAllFriends, registerBirthday, alreadyRegistered, getBirthdayDate, deleteBirthday, getBirthdays, isFriend, addFriend }

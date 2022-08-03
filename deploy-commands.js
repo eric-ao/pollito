@@ -18,12 +18,6 @@ const rest = new REST({ version: '9' }).setToken(process.env.TOKEN);
     try {
         logger.print('Refreshing slash commands...');
 
-        //Guild commands:
-        //await rest.put(
-        //    Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.CAC_ID),
-        //    { body: commands },
-        //);
-
         //Global commands:
         await rest.put(
             Routes.applicationCommands(process.env.CLIENT_ID),

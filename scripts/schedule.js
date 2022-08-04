@@ -17,7 +17,7 @@ let GNmsgs = lang.good_night_msgs;
  * It will only message those users that are friend with Pollito.
  */
  async function scheduleGM() {
-    logger.print(`Scheduling wishing a good day at ${config.good_morning_hour}:00...`)
+    logger.print(`Scheduling wishing a good day at ${config.good_morning_hour}:30...`)
     schedule.scheduleJob({hour: config.good_morning_hour, minute: 30}, () => {return scheduledJob(`Pío pío, buenos dias! ${GMmsgs[Math.floor(Math.random()*GMmsgs.length)]} 🐥`, "day")});
 }
 
@@ -41,7 +41,8 @@ async function scheduledJob(message, time) {
     logger.print(`Wishing a good ${time} to all Pollito's friends...`)
     
     let friends = await database.getAllFriends(); 
-    
+    logger.print(`Found ${friends.length} friends.`)
+
     client.guilds.cache.forEach(guild => {
         guild.members.cache.forEach(member => {
                 if(friends.includes(member.id) && !idsDone.includes(member.id)) {
@@ -52,7 +53,7 @@ async function scheduledJob(message, time) {
                 }
             })
     });
-    logger.print(`Wished a good ${time} to ${counter} users successfully!`)
+    logger.print(`Wished a good ${time} to ${counter} friends successfully!`)
 }
 
 /**

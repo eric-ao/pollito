@@ -1,7 +1,5 @@
-const schedule = require('node-schedule');
+const cache = require('../util/cache')
 const logger = require('../util/logger');
-const config = require('../config.json');
-const lang = require('../lang/es.json');
 const database = require('../util/database');
 const {client} = require('../client');
 const { MessageActionRow, MessageButton } = require('discord.js');
@@ -11,7 +9,13 @@ require('dotenv').config();
 
 client.on('messageCreate', async message => {
     if (message.channel.type == 'DM' && !message.author.bot) {
-        let isFriend = await database.isFriend(message.author.id);
+        let isFriend;
+        if(!cache.check(message.author.id)){
+            isFriend = await database.isFriend(message.author.id);
+            cache.update(message.author.id, isFriend);
+        }   
+        else
+            isFriend = cache.get(message.author.id)
 
         if(isFriend){
         } else {
@@ -45,6 +49,7 @@ client.on('interactionCreate', async interaction => {
 	
     if(interaction.customId == 'yes') {
         database.addFriend(interaction, interaction.user.id)
+        cache.update(interaction.user.id, true);
     }
     else if(interaction.customId == 'no') {
         await deleteMessage(interaction)

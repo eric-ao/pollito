@@ -67,29 +67,32 @@ async function scheduleBirthdayWish() {
         let birthdays = await database.getBirthdays();
         
         logger.print(`Today is the birthday of ${birthdays.length} users.`)
-        logger.print(`Wishing a happy birthday to them...`)
+        
+        if(birthdays.length > 0) {
+            logger.print(`Wishing a happy birthday to them...`)
 
-        birthdays.forEach(id => async () => {
-            let isFriend = await database.isFriend(id);
-
-            if(isFriend) {
-                client.guilds.cache.forEach(guild => {
-                    //It will only try to find the member once if its in many guilds with Pollito.
-                    if(!idsDone.includes(id)) {
-                        counter++;
-                        idsDone.push(id);
-                        let member = guild.members.cache.find(member => member.id == id);
-                        member.send(config.birthday.msg).catch(err => logger.error(err));
-                    }
-                })
-            }
-
-            else {
-                logger.print("It's someones birthday, but it's not Pollito's friend anymore!")
-            }
-            
-        })
-        logger.print(`Wished happy birthday to ${counter} users.`)
+            birthdays.forEach(id => async () => {
+                let isFriend = await database.isFriend(id);
+    
+                if(isFriend) {
+                    client.guilds.cache.forEach(guild => {
+                        //It will only try to find the member once if its in many guilds with Pollito.
+                        if(!idsDone.includes(id)) {
+                            counter++;
+                            idsDone.push(id);
+                            let member = guild.members.cache.find(member => member.id == id);
+                            member.send(config.birthday.msg).catch(err => logger.error(err));
+                        }
+                    })
+                }
+    
+                else {
+                    logger.print("It's someones birthday, but it's not Pollito's friend anymore!")
+                }
+                
+            })
+            logger.print(`Wished happy birthday to ${counter} users.`)
+        }
     })
 }
 
